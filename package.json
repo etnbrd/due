@@ -1,0 +1,30 @@
+{
+  "name": "Vow",
+  "version": "0.0.1",
+  "description": "A simpler alternative to Promises in Javascript",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test",
+    "lib": "src"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^2.0.1"
+  },
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/etnbrd/vow"
+  },
+  "keywords": [
+    "vow"
+  ],
+  "author": "Etienne Brodu <etn@etnbrd.com> (http://etnbrd.com/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/etnbrd/vow/issues"
+  },
+  "homepage": "https://github.com/etnbrd/vow"
+}
