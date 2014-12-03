@@ -26,34 +26,69 @@ describe('Due', function(){
   })
 
   it('should cascade synchronously', function(done){
-    var d = new D(function(settle) {
+    new D(function(settle) {
       settle(null, "result");
     })
-
-    d.then(function(error, result) {
+    .then(function(error, result) {
       return new D(function(settle) {
         settle(null, "result2");
       });
-    }).then(function(error, result) {
-      if (result === "result2")
+    })
+    .then(function(error, result) {
+      if (result === "result2") {
         done();
+      }
     })
   })
 
   it('should cascade asynchronously', function(done){
-    var d = new D(function(settle) {
+    new D(function(settle) {
       setImmediate(function() {
           settle(null, "result")
       });
     })
-
-    d.then(function(error, result) {
+    .then(function(error, result) {
       return new D(function(settle) {
         setImmediate(function() {
           settle(null, "result2")
         });
       });
-    }).then(function(error, result) {
+    })
+    .then(function(error, result) {
+      if (result === "result2")
+        done();
+    })
+  })
+
+  it('should cascade synchronously then asynchronously', function(done){
+    new D(function(settle) {
+      settle(null, "result");
+    })
+    .then(function(error, result) {
+      return new D(function(settle) {
+        setImmediate(function() {
+          settle(null, "result2");
+        });
+      });
+    })
+    .then(function(error, result) {
+      if (result === "result2")
+        done();
+    })
+  })
+
+  it('should cascade asynchronously then synchronously', function(done){
+    new D(function(settle) {
+      setImmediate(function() {
+          settle(null, "result");
+      });
+    })
+    .then(function(error, result) {
+      return new D(function(settle) {
+        settle(null, "result2");
+      });
+    })
+    .then(function(error, result) {
       if (result === "result2")
         done();
     })

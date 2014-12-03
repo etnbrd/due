@@ -2,6 +2,8 @@ function Due(callback) {
 
   var self = this;
 
+  this.id = Math.floor(Math.random() * 100000);
+
   this.value = undefined;
   this.status = 'pending';
   this.deferral = [];
@@ -9,30 +11,43 @@ function Due(callback) {
   this.futures = [];
 
   this.defer = function(onSettlement) {
+    /*  Defer the execution of the settlement handler
+     */
     self.deferral.push(onSettlement);
   }
 
+  this.link = function(follower) {
+    /*  Link the status of follower to the status of the future due
+     */
+    if (this.status !== 'pending')
+      follower.apply(null, this.value)
+    else 
+      this.defer(follower);
+  }
+
   this.resolve = function() {
-    if (self.status !== 'pending') {
-      self.futures = self.deferral.map(function(deferred) {
+    /*  ++ Resolve Due ++
+     *  If the current due is settled (1)
+     *  Execute every settlement handler, and store the (future) results (2).
+     *  Link every follower (4) added by a returned due (returned.9) to every future returned by the current resolution (3)
+     */
+
+    if (self.status !== 'pending') { // (1)
+      self.futures = self.deferral.map(function(deferred) { // (2)
         return deferred.apply(null, self.value);
       })
 
-      .filter(function(future) {
-        return future && future.isDue;
-      })
-
-      self.followers.forEach(function(follower) {
-        self.futures.forEach(function(future) {
-          if (future && future.isDue) {
-            future.defer(follower);
-          }
-        })
+      self.futures.forEach(function(future) {
+        if (future && future.isDue) { // (3)
+          self.followers.forEach(function(follower) {
+            future.link(follower); // (4)
+          })
+        }
       });
     }
   }
 
-
+  // Call the deferred computation with the settlement function as argument
   callback(function() {
     self.value = arguments;
     self.status = 'settled';
@@ -48,20 +63,22 @@ Due.prototype.then = function(onSettlement) {
 
   var self = this;
   return new Due(function(settle) {
+    /*  ++ Returned Due ++
+     *  If the current due is settled (1), then the future is available.
+     *  If this future value is a due, link the returned due to it (2)
+     *  If this future value is not a due, settle the returned due with the future value (3).
+     *  If the current due is pending (4), add the settlement handler to the followers (5), to be deferred to the future dues of the current due. (resolve.4)
+     */
 
-    if (self.status !== 'pending'
-    &&  self.futures.every(function(future) {
-      return (!future || !future.isDue || future.status !== 'pending')
-    })) {
+    if (self.status !== 'pending') { // (1)
       self.futures.forEach(function(future) {
         if (future && future.isDue)
-          settle.apply(null, future.value);
-        else {
-          settle.apply(null, future);
-        }
+          future.link(settle); // (2)
+        else
+          settle.apply(null, future); // (3)
       })
-    } else {
-      self.followers.push(settle);
+    } else { // (4)
+      self.followers.push(settle); // (5)
     }
   });
 }

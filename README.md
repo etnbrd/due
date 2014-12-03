@@ -1,6 +1,8 @@
 # Due
 
 A simpler alternative to Promises in Javascript.
+It doesn't follow the Promise/A+ specification.
+Instead, it follows the *error-first* convention from Node.js.
 
 ## Examples
 
@@ -15,7 +17,7 @@ var d = new D(function(settle) {
 
 d.then(function(result) {
   if (result === "result")
-    done();
+    console.log('done');
 })
 ```
 
@@ -34,7 +36,7 @@ var count = 0;
 
 var then = function(error, result) {
   if (result === 'result' && ++count === 2)
-    done()
+    console.log('done');
 }
 
 d.then(then);
