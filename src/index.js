@@ -1,4 +1,4 @@
-function Vow(callback) {
+function Due(callback) {
 
   var self = this;
 
@@ -19,12 +19,12 @@ function Vow(callback) {
       })
 
       .filter(function(future) {
-        return future && future.isVow;
+        return future && future.isDue;
       })
 
       self.followers.forEach(function(follower) {
         self.futures.forEach(function(future) {
-          if (future && future.isVow) {
+          if (future && future.isDue) {
             future.defer(follower);
           }
         })
@@ -40,21 +40,21 @@ function Vow(callback) {
   });
 }
 
-Vow.prototype.isVow = true;
+Due.prototype.isDue = true;
 
-Vow.prototype.then = function(onSettlement) {
+Due.prototype.then = function(onSettlement) {
   this.defer(onSettlement);
   this.resolve();
 
   var self = this;
-  return new Vow(function(settle) {
+  return new Due(function(settle) {
 
     if (self.status !== 'pending'
     &&  self.futures.every(function(future) {
-      return (!future || !future.isVow || future.status !== 'pending')
+      return (!future || !future.isDue || future.status !== 'pending')
     })) {
       self.futures.forEach(function(future) {
-        if (future && future.isVow)
+        if (future && future.isDue)
           settle.apply(null, future.value);
         else {
           settle.apply(null, future);
@@ -66,4 +66,4 @@ Vow.prototype.then = function(onSettlement) {
   });
 }
 
-module.exports = Vow;
+module.exports = Due;

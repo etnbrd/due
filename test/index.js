@@ -1,37 +1,37 @@
-var V = require('../src');
+var D = require('../src');
 
-describe('Vow', function(){
+describe('Due', function(){
   it('should settle synchronously', function(done){
-    var v = new V(function(settle) {
+    var d = new D(function(settle) {
         settle("result");
     })
 
-    v.then(function(result) {
+    d.then(function(result) {
       if (result === "result")
         done();
     })
   })
 
   it('should settle asynchronously', function(done){
-    var v = new V(function(settle) {
+    var d = new D(function(settle) {
         setImmediate(function() {
           settle(null, "result")
         });
     })
 
-    v.then(function(error, result) {
+    d.then(function(error, result) {
       if (result === "result")
         done();
     })
   })
 
   it('should cascade synchronously', function(done){
-    var v = new V(function(settle) {
+    var d = new D(function(settle) {
       settle(null, "result");
     })
 
-    v.then(function(error, result) {
-      return new V(function(settle) {
+    d.then(function(error, result) {
+      return new D(function(settle) {
         settle(null, "result2");
       });
     }).then(function(error, result) {
@@ -41,14 +41,14 @@ describe('Vow', function(){
   })
 
   it('should cascade asynchronously', function(done){
-    var v = new V(function(settle) {
+    var d = new D(function(settle) {
       setImmediate(function() {
           settle(null, "result")
       });
     })
 
-    v.then(function(error, result) {
-      return new V(function(settle) {
+    d.then(function(error, result) {
+      return new D(function(settle) {
         setImmediate(function() {
           settle(null, "result2")
         });
@@ -59,8 +59,8 @@ describe('Vow', function(){
     })
   })
 
-  it('should allow multiple then to same synchronous vow', function(done){
-    var v = new V(function(settle) {
+  it('should allow multiple then to same synchronous due', function(done){
+    var d = new D(function(settle) {
       settle(null, "result")
     })
 
@@ -71,12 +71,12 @@ describe('Vow', function(){
         done()
     }
 
-    v.then(then);
-    v.then(then);
+    d.then(then);
+    d.then(then);
   })
 
-  it('should allow multiple then to same asynchronous vow', function(done){
-    var v = new V(function(settle) {
+  it('should allow multiple then to same asynchronous due', function(done){
+    var d = new D(function(settle) {
       setImmediate(function() {
           settle(null, "result")
       });
@@ -89,8 +89,8 @@ describe('Vow', function(){
         done()
     }
 
-    v.then(then);
-    v.then(then);
+    d.then(then);
+    d.then(then);
   })
 
 
