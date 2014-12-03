@@ -70,7 +70,7 @@ Due.prototype.then = function(onSettlement) {
 Due.mock = function(fn) {
   return function() {    
     args = Array.prototype.slice(arguments, 0);
-    var d = new D(function(settle) {
+    var d = new Due(function(settle) {
       args.push(settle);
       fn.apply(null, args);
     })
