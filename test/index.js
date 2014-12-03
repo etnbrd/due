@@ -94,5 +94,10 @@ describe('Due', function(){
   })
 
 
+  it('should expose the mock function', function(){
+    if (D.mock === undefined)
+      throw 'mock not available'
+  })
+
   // returned value should either be a vow, or a value
 })

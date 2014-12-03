@@ -66,8 +66,8 @@ Due.prototype.then = function(onSettlement) {
   });
 }
 
-// The bailiff transform a function expecting callback into a function returning due.
-Due.prototype.bailiff = function(fn) {
+// Transform a function expecting callback into a function returning due.
+Due.mock = function(fn) {
   return function() {    
     args = Array.prototype.slice(arguments, 0);
     var d = new D(function(settle) {
