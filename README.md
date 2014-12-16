@@ -39,7 +39,7 @@ Some tools exists to arrange asynchronous execution in a more readable way, for 
 Due is similar to Promise, but with a simpler interface.
 
 A due is an object returned by an asynchronous call.
-This object exposes a single method `then`, to continue the execution, once the asynchronous call complete.
+This object exposes a method `then`, to continue the execution, once the asynchronous call complete.
 
 ```
 my_fn('input')
