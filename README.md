@@ -103,7 +103,7 @@ module.exports = {
 var my_lib = require('./my_lib');
 
 my_lib.my_fn('input')
-.then(function(result) {
+.then(function(err, result) {
   if (result === "result")
     console.log('done');
 })
