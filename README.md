@@ -29,7 +29,7 @@ The source code structure doesn't follow the execution order.
 
 ```
 my_fn('input', function callback(err, res) {
-  another\_fn('another\_input', function callback2() {
+  another_fn('another_input', function callback2() {
     // deferred continuation
   })
 })
@@ -52,7 +52,7 @@ A due, like a promise, flatten the intricate imbrication of callbacks.
 ```
 my_fn('input')
 .then(function(err, res) {
-  return another\_fn('another\_input')
+  return another_fn('another_input')
 })
 .then(function(err, res) {
   // second continuation
@@ -100,9 +100,9 @@ module.exports = {
 `client.js`
 ```
 // The due is returned by your library to be handled by the client.
-var my\_lib = require('./my\_lib');
+var my_lib = require('./my_lib');
 
-my\_lib.my\_fn('input')
+my_lib.my_fn('input')
 .then(function(result) {
   if (result === "result")
     console.log('done');
