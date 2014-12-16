@@ -1,5 +1,7 @@
 # Due
 
+[![NPM](https://nodei.co/npm/due.png?compact=true)](https://www.npmjs.com/package/due)
+
 A simpler alternative to Promises in Javascript.
 It doesn't follow the Promise/A+ specification.
 Instead, it follows the *error-first* convention from Node.js.
