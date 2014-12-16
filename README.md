@@ -35,8 +35,8 @@ my_fn('input', function callback(err, res) {
 })
 ```
 
-Some tools exists to arrange asynchronous execution in a more readable way : [Promise/A+](https://promisesaplus.com/).
-Due is one of these tools.
+Some tools exists to arrange asynchronous execution in a more readable way, for example [Promise/A+](https://promisesaplus.com/), or [Functional Reactive Programming](https://baconjs.github.io/).
+Due is similar to Promise, but with a simpler interface.
 
 A due is an object returned by an asynchronous call.
 This object exposes a single method `then`, to continue the execution, once the asynchronous call complete.
@@ -61,7 +61,7 @@ my_fn('input')
 
 ## How to use a due ?
 
-### Monkey patch an existing library to be due-compatible
+### Patch an existing library to be due-compatible
 
 The [due npm module](https://www.npmjs.com/package/due) expose a function `mock` make asynchronous function using callback, return a due.
 
@@ -80,39 +80,31 @@ readdir(path)
 
 ### Create your own due-compatible library
 
-A simple due :
+A simple due-compatible library :
+
+`my_lib.js`
+```
+var D = require('due');
+
+module.exports = {
+  my_fn: function(input) {
+    return new D(function(settle) {
+        // Here, your asynchronous operations, with settle as callback.
+        async_fn(input, settle);
+    })
+  } 
+}
 
 ```
-var D = require('../src');
 
-var d = new D(function(settle) {
-    settle("result");
-})
+`client.js`
+```
+// The due is returned by your library to be handled by the client.
+var my\_lib = require('./my\_lib');
 
-d.then(function(result) {
+my\_lib.my\_fn('input')
+.then(function(result) {
   if (result === "result")
     console.log('done');
 })
-```
-
-Cascade of asynchronous dues :
-
-```
-var D = require('../src');
-
-var d = new D(function(settle) {
-  setImmediate(function() {
-      settle(null, "result")
-  });
-})
-
-var count = 0;
-
-var then = function(error, result) {
-  if (result === 'result' && ++count === 2)
-    console.log('done');
-}
-
-d.then(then);
-d.then(then);
 ```
