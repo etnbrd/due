@@ -88,6 +88,7 @@ var D = require('due');
 
 module.exports = {
   my_fn: function(input) {
+    // The due is returned to be handled by the client.
     return new D(function(settle) {
         // Here, your asynchronous operations, with settle as callback.
         async_fn(input, settle);
@@ -99,7 +100,6 @@ module.exports = {
 
 `client.js`
 ```
-// The due is returned by your library to be handled by the client.
 var my_lib = require('./my_lib');
 
 my_lib.my_fn('input')

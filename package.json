@@ -1,6 +1,6 @@
 {
   "name": "due",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "A simpler alternative to Promises in Javascript",
   "main": "src/index.js",
   "directories": {
