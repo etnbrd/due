@@ -7,7 +7,6 @@
     "test": "test",
     "lib": "src"
   },
-  "dependencies": {},
   "devDependencies": {
     "mocha": "^2.0.1"
   },
