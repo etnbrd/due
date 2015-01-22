@@ -86,10 +86,11 @@ Due.prototype.then = function(onSettlement) {
 // Transform a function expecting callback into a function returning due.
 Due.mock = function(fn) {
   return function() {
-    var args = Array.prototype.slice.call(arguments);
+    var _args = Array.prototype.slice.call(arguments),
+        _this = this;
     return new Due(function(settle) {
-      args.push(settle);
-      fn.apply(null, args);
+      _args.push(settle);
+      fn.apply(_this, _args);
     })
   }
 }
